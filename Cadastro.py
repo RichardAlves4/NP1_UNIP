@@ -4,20 +4,19 @@ def verifica_user():
     estado_verifica_user = False
 
     while not estado_verifica_user:
-        cadastro = input("Digite:\n\n\"A\" Para acesso a área do aluno\n\"P\" Para acesso a área do professor\n\"E\" Para Sair\n").upper()
+        menu_verifica_user = input("Digite:\n\n\"A\" Para acesso a área do aluno\n\"P\" Para acesso a área do professor\n\"E\" Para Sair\n").upper()
 
-        if cadastro not in ["A", "a", "P", "p", "E", "e"]:
+        if menu_verifica_user not in ["A", "a", "P", "p", "E", "e"]:
             print("\nOpção inválida. Tente novamente.\n")
             continue
 
-        if cadastro == "A" or cadastro == "a":
+        if menu_verifica_user == "A" or menu_verifica_user == "a":
             aluno()
-        elif cadastro == "P" or cadastro == "p":
+        elif menu_verifica_user == "P" or menu_verifica_user == "p":
             professor()
-        elif cadastro == "E" or cadastro == "e":
+        elif menu_verifica_user == "E" or menu_verifica_user == "e":
             print("Saiu!")
             break
-
 
 def aluno():
     estado_aluno = False
@@ -98,27 +97,72 @@ def cadastro_professor():
             repet_senha_professor = str(input("Repita sua senha: "))
 
             if senha_professor == repet_senha_professor:
-                login_professor()
-                return repet_senha_professor
+                login_professor(email_professor, senha_professor)
+                return 
             else:
                 print("\nSenha incorreta! Tente novamente\n")
 
-def login_aluno(email_cadastrado, senha_cadastrada):
+def login_aluno(email_cadastrado_aluno, senha_cadastrada_aluno):
     print("\nEntrar como aluno\n")
 
     while True:
         email_login_aluno = str(input("Email: "))
         senha_login_aluno = str(input("Senha: "))
 
-        if email_login_aluno == email_cadastrado and senha_login_aluno == senha_cadastrada:
-            avaliacao()
+        if email_login_aluno == email_cadastrado_aluno and senha_login_aluno == senha_cadastrada_aluno:
+            main_aluno()
             break
         else:
             print("Email ou senha incorretos! Tente novamente")
-            
+                    
+def login_professor(email_cadastrado_professor, senha_cadastrada_professor):
+    print("\nEntrar como professor\n")
 
-def login_professor():
-    print("vjhn mh")
+    while True:
+        email_login_professor = str(input("Email: "))
+        senha_login_professor = str(input("Senha: "))
+
+        if email_login_professor == email_cadastrado_professor and senha_login_professor == senha_cadastrada_professor:
+            main_professor()
+            break
+        else:
+            print("Email ou senha incorretos! Tente novamente")
+
+def main_aluno():
+    estado_main_aluno = False
+
+    while not estado_main_aluno:
+        print("Bem-vindo aluno! ao site da Escola")
+        menu_main_aluno = input("Digite:\n\n\"P\" Para acessar a prova\n\"R\" Para acessar sua nota\n\"E\" Para desconectar\n").upper()
+
+        if menu_main_aluno not in ["P", "p", "R", "r", "E", "e"]:
+            print("\nOpção inválida. Tente novamente.\n")
+            continue
+
+        if menu_main_aluno == "P" or menu_main_aluno == "p":
+            avaliacao()
+        elif menu_main_aluno == "R" or menu_main_aluno == "r":
+            avaliacao_resultado()
+        elif menu_main_aluno == "E" or menu_main_aluno == "e":
+            print("Desconectar!")
+            break
+
+def main_professor():
+    estado_main_professor = False
+
+    while not estado_main_professor:
+        print("Bem-vindo professor! ao site da Escola")
+        menu_main_professor = input("Digite:\n\n\"P\" Para acessar a prova\n\"R\" Para acessar sua nota\n\"E\" Para desconectar\n").upper()
+
+        if menu_main_professor not in ["R", "r", "E", "e"]:
+            print("\nOpção inválida. Tente novamente.\n")
+            continue
+
+        if menu_main_professor == "R" or menu_main_professor == "r":
+            avaliacao_resultado()
+        elif menu_main_professor == "E" or menu_main_professor == "e":
+            print("Desconectar!")
+            break
 
 def avaliacao():
     print("\nAqui será a avaliação do aluno...\n")

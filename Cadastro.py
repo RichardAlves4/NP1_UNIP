@@ -67,31 +67,61 @@ def cadastro_aluno():
     print("\nCadastro de Alunos\n")
     
     while True:
-        email_aluno = str(input("Informe seu melhor email!"))
+        email_aluno = str(input("Informe seu melhor email: "))
         
         if not email_aluno.endswith("@gmail.com"):
             print("\nE-mail inválido! Certifique-se de usar um endereço @gmail.com.\n")
             continue
             
         while True:
-            senha_aluno = str(input("Informe uma senha forte!"))
-            repet_senha_aluno = str(input("Repita sua senha"))
-            if senha_aluno == repet_senha_aluno:
-                return repet_senha_aluno
-            else:
-                print("\nSenha incorreta!\n")
+            senha_aluno = str(input("Informe uma senha forte: "))
+            repet_senha_aluno = str(input("Repita sua senha: "))
 
-def login_aluno():
-    print("vjhn mh")
+            if senha_aluno == repet_senha_aluno:
+                login_aluno(email_aluno, senha_aluno)
+                return   
+            else:
+                print("\nSenha incorreta! Tente novamente\n")
 
 def cadastro_professor():
-    print("ref")
+    print("\nCadastro de Professores\n")
+    
+    while True:
+        email_professor = str(input("Informe seu melhor email: "))
+        
+        if not email_professor.endswith("@gmail.com"):
+            print("\nE-mail inválido! Certifique-se de usar um endereço @gmail.com.\n")
+            continue
+            
+        while True:
+            senha_professor = str(input("Informe uma senha forte: "))
+            repet_senha_professor = str(input("Repita sua senha: "))
+
+            if senha_professor == repet_senha_professor:
+                login_professor()
+                return repet_senha_professor
+            else:
+                print("\nSenha incorreta! Tente novamente\n")
+
+def login_aluno(email_cadastrado, senha_cadastrada):
+    print("\nEntrar como aluno\n")
+
+    while True:
+        email_login_aluno = str(input("Email: "))
+        senha_login_aluno = str(input("Senha: "))
+
+        if email_login_aluno == email_cadastrado and senha_login_aluno == senha_cadastrada:
+            avaliacao()
+            break
+        else:
+            print("Email ou senha incorretos! Tente novamente")
+            
 
 def login_professor():
     print("vjhn mh")
 
 def avaliacao():
-    print("rpre")
+    print("\nAqui será a avaliação do aluno...\n")
 
 def avaliacao_resultado():
     print("rpre")

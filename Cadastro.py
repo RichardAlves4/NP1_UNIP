@@ -103,8 +103,8 @@ def cadastro_aluno():
             repet_senha_aluno = str(input("Repita sua senha: ")).strip()
 
             if senha_aluno == repet_senha_aluno:
-                usuarios_alunos[email_aluno] = senha_aluno  # Adiciona ao dicionário
-                salvar_usuarios()
+                usuarios_alunos[email_aluno] = senha_aluno  
+                salvar_usuarios() #Parei aqui 
             else:
                 print("\nSenha incorreta! Tente novamente\n")
 

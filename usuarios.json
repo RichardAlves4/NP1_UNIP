@@ -1,0 +1,16 @@
+{
+    "alunos": {
+        "aluno123@gmail.com": {
+            "nome": "Richard Alves Da Silva",
+            "idade": 34,
+            "senha": "$2b$12$0E2ZNIsWufDQ0c6J024oTe/UVoZ/hfg0Rz94fDRTmR27HYq2thxS."
+        }
+    },
+    "professores": {
+        "professor123@gmail.com": {
+            "nome": "Gsld Flef Cc",
+            "idade": 44,
+            "senha": "$2b$12$sxR1nfVjU13SPfMONjYrn.DWo96ZTpLmtGbRPCbz33ZSlynpBKbiO"
+        }
+    }
+}

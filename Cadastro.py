@@ -1,3 +1,4 @@
+import bcrypt
 import json
 
 arquivo_json = "usuarios.json"
@@ -5,7 +6,7 @@ arquivo_json = "usuarios.json"
 usuarios_alunos = {}
 usuarios_professores = {}
 
-def carregar_uuarios():
+def carregar_usuarios():
 
     global usuarios_alunos, usuarios_professores
     try:
@@ -19,6 +20,15 @@ def carregar_uuarios():
 def salvar_usuarios():
     with open(arquivo_json, "w") as json_aberto:
         json.dump({"alunos":usuarios_alunos, "professores":usuarios_professores}, json_aberto, indent= 4)
+
+def criptografar_senha(senha):
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(senha.encode(), salt).decode()
+
+def verificar_senha(senha_digitada, senha_armazenada):
+    return bcrypt.checkpw(senha_digitada.encode(), senha_armazenada.encode())
+
+carregar_usuarios()
 
 print("Bem-vindo ao nosso site.")
 
@@ -88,7 +98,9 @@ def cadastro_aluno():
     print("\nCadastro de Alunos\n")
     
     while True:
-        email_aluno = str(input("Informe seu melhor email: ")).strip()
+
+        nome_aluno = (input("Informe seu nome: ")).strip().title()
+        email_aluno = (input("Informe seu melhor email: ")).strip().lower()
         
         if not email_aluno.endswith("@gmail.com"):
             print("\nE-mail inválido! Certifique-se de usar um endereço @gmail.com.\n")
@@ -97,14 +109,29 @@ def cadastro_aluno():
         if email_aluno in usuarios_alunos:
             print("Usuário já cadastrado")
             continue
+
+        while True:
+                idade_aluno = int(input("Informe sua idade: ").strip())
+                if idade_aluno < 7:
+                    print("\nIdade inválida! Tente novamente.\n")
+                    continue
+                else:
+                    break
             
         while True:
-            senha_aluno = str(input("Informe uma senha forte: ")).strip()
-            repet_senha_aluno = str(input("Repita sua senha: ")).strip()
+            senha_aluno = (input("Informe uma senha forte: ")).strip()
+            repet_senha_aluno = (input("Repita sua senha: ")).strip()
 
             if senha_aluno == repet_senha_aluno:
-                usuarios_alunos[email_aluno] = senha_aluno  
-                salvar_usuarios() #Parei aqui 
+                senha_criptografada = criptografar_senha(senha_aluno)
+                usuarios_alunos[email_aluno] = {
+                    "nome": nome_aluno,
+                    "idade": idade_aluno,
+                    "senha": senha_criptografada
+                } 
+                salvar_usuarios()
+                print("\nCadastro realizado com sucesso!\n")
+                return
             else:
                 print("\nSenha incorreta! Tente novamente\n")
 
@@ -112,53 +139,77 @@ def cadastro_professor():
     print("\nCadastro de Professores\n")
     
     while True:
+
+        nome_professor = str(input("Informe o seu nome: ")).strip().title()
         email_professor = str(input("Informe seu melhor email: ")).strip()
         
         if not email_professor.endswith("@gmail.com"):
             print("\nE-mail inválido! Certifique-se de usar um endereço @gmail.com.\n")
             continue
+
+        if email_professor in usuarios_professores:
+            print("Usuário já cadastrado")
+            continue
+
+        while True:
+            idade_professor = int(input("Informe sua idade: ").strip())
+            if idade_professor < 18:
+                print("\nIdade inválida! Tente novamente.\n")
+                continue
+            else:
+                break
             
         while True:
             senha_professor = str(input("Informe uma senha forte: ")).strip()
             repet_senha_professor = str(input("Repita sua senha: ")).strip()
 
             if senha_professor == repet_senha_professor:
-                login_professor(email_professor, senha_professor)
-                return 
+                senha_criptografada = criptografar_senha(senha_professor)
+                usuarios_professores[email_professor] = {
+                    "nome": nome_professor,
+                    "idade": idade_professor,
+                    "senha": senha_criptografada
+                }
+                salvar_usuarios()
+                print("\nCadastro realizado com sucesso!\n")
+                return
             else:
                 print("\nSenha incorreta! Tente novamente\n")
 
-def login_aluno(email_cadastrado_aluno, senha_cadastrada_aluno):
+def login_aluno():
     print("\nEntrar como aluno\n")
 
     while True:
-        email_login_aluno = str(input("Email: "))
-        senha_login_aluno = str(input("Senha: "))
+        email_aluno = str(input("Email: ")).strip().lower()
+        senha_aluno = str(input("Senha: ")).strip()
 
-        if email_login_aluno == email_cadastrado_aluno and senha_login_aluno == senha_cadastrada_aluno:
+        if email_aluno in usuarios_alunos:
+            senha_armazenada = usuarios_alunos[email_aluno]["senha"]
+        if verificar_senha(senha_aluno, senha_armazenada):
+            print(f"\nBem-vindo, {usuarios_alunos[email_aluno]['nome']}!")
             main_aluno()
             break
-        else:
-            print("Email ou senha incorretos! Tente novamente")
+        print("Email ou senha incorretos! Tente novamente")
                     
-def login_professor(email_cadastrado_professor, senha_cadastrada_professor):
+def login_professor():
     print("\nEntrar como professor\n")
 
     while True:
-        email_login_professor = str(input("Email: "))
-        senha_login_professor = str(input("Senha: "))
+        email_professor = str(input("Email: ")).strip().lower()
+        senha_professor = str(input("Senha: ")).strip()
 
-        if email_login_professor == email_cadastrado_professor and senha_login_professor == senha_cadastrada_professor:
+        if email_professor in usuarios_professores:
+            senha_armazenada = usuarios_professores[email_professor]["senha"]
+        if verificar_senha(senha_professor, senha_armazenada):
+            print(f"\nBem-vindo, {usuarios_professores[email_professor]['nome']}!")
             main_professor()
             break
-        else:
-            print("Email ou senha incorretos! Tente novamente")
+        print("Email ou senha incorretos! Tente novamente")
 
 def main_aluno():
     estado_main_aluno = False
 
     while not estado_main_aluno:
-        print("Bem-vindo aluno! ao site da Escola")
         menu_main_aluno = input("Digite:\n\n\"P\" Para acessar a prova\n\"R\" Para acessar sua nota\n\"E\" Para desconectar\n").upper()
 
         if menu_main_aluno not in ["P","R","E"]:
@@ -177,7 +228,6 @@ def main_professor():
     estado_main_professor = False
 
     while not estado_main_professor:
-        print("Bem-vindo professor! ao site da Escola")
         menu_main_professor = input("Digite:\n\n\"P\" Para acessar a prova\n\"R\" Para acessar sua nota\n\"E\" Para desconectar\n").upper()
 
         if menu_main_professor not in ["R", "E"]:

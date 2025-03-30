@@ -6,6 +6,17 @@ arquivo_json = "usuarios.json"
 usuarios_alunos = {}
 usuarios_professores = {}
 
+questoes = [
+    {"pergunta": "1. Qual é a saída do seguinte código?\nprint(2 + 3 * 4)", "opcoes": ["A) 20", "B) 14", "C) 24", "D) 10"], "resposta": "B", "valor": 1},
+    {"pergunta": "2. Qual dessas opções representa um comentário em Python?", "opcoes": ["A) // Isso é um comentário", "B) <!-- Isso é um comentário -->", "C) # Isso é um comentário", "D)  /* Isso é um comentário */"], "resposta": "C", "valor": 1},
+    {"pergunta": "3. Qual é a função usada para exibir algo na tela em Python?", "opcoes": ["A) display()", "B) echo()", "C) print()", "D) show()"], "resposta": "C", "valor": 1},
+    {"pergunta": "4. O que acontece se tentarmos executar este código?\nx = 10\nif x > 5:\n    print(\"Maior que 5\")\nelse:\n    print(\"Menor ou igual a 5\")", "opcoes": ["A) Imprime \"Maior que 5\" normalmente", "B) Dá erro de indentação", "C) Imprime \"Menor ou igual a 5\"", "D) O código não faz nada"], "resposta": "B", "valor": 1},
+    {"pergunta": "5. Qual dessas opções representa uma estrutura de repetição em Python?", "opcoes": ["A) loop()", "B) for", "C) repeat", "D) do-while"], "resposta": "B", "valor": 1},
+    {"pergunta": "6. Qual é a saída do seguinte código?\na = 5\nb = \"10\"\nprint(a + int(b))", "opcoes": ["A) 15", "B) 510", "C) Erro de tipo", "D) 5 + 10"], "resposta": "A", "valor": 2},
+    {"pergunta": "7. O que esse código faz?\nfor i in range(3):\n    print(i)", "opcoes": ["A) Imprime 1, 2, 3", "B) Imprime 0, 1, 2", "C) Imprime 0, 1, 2, 3", "D) Dá erro"], "resposta": "B", "valor": 1},
+    {"pergunta": "8. Como declarar uma lista em Python?", "opcoes": ["A) lista = {1, 2, 3}", "B) lista = [1, 2, 3]", "C) lista = (1, 2, 3)", "D) lista = <1, 2, 3>"], "resposta": "B", "valor": 2}
+]
+
 def carregar_usuarios():
 
     global usuarios_alunos, usuarios_professores
@@ -187,7 +198,7 @@ def login_aluno():
             senha_armazenada = usuarios_alunos[email_aluno]["senha"]
         if verificar_senha(senha_aluno, senha_armazenada):
             print(f"\nBem-vindo, {usuarios_alunos[email_aluno]['nome']}!")
-            main_aluno()
+            main_aluno(email_aluno)
             break
         print("Email ou senha incorretos! Tente novamente")
                     
@@ -206,7 +217,7 @@ def login_professor():
             break
         print("Email ou senha incorretos! Tente novamente")
 
-def main_aluno():
+def main_aluno(email):
     estado_main_aluno = False
 
     while not estado_main_aluno:
@@ -217,33 +228,142 @@ def main_aluno():
             continue
 
         if menu_main_aluno == "P":
-            avaliacao()
+            avaliacao(email)
         elif menu_main_aluno == "R":
-            avaliacao_resultado()
+            avaliacao_resultado(email)
         elif menu_main_aluno == "E":
             print("Desconectar!")
             break
 
 def main_professor():
-    estado_main_professor = False
 
-    while not estado_main_professor:
-        menu_main_professor = input("Digite:\n\n\"P\" Para acessar a prova\n\"R\" Para acessar sua nota\n\"E\" Para desconectar\n").upper()
-
-        if menu_main_professor not in ["R", "E"]:
-            print("\nOpção inválida. Tente novamente.\n")
-            continue
+    while True:
+        menu_main_professor = input("Digite:\n\n\"R\" Para acessar o relatório completo\n\"G\" Para acessar o gabarito\n\"E\" Para desconectar\n").upper()
 
         if menu_main_professor == "R":
-            avaliacao_resultado()
+            relatorio_professor()
+        elif menu_main_professor == "G":
+            gabarito()  
         elif menu_main_professor == "E":
             print("Desconectar!")
             break
+        else:
+            print("\nOpção inválida. Tente novamente.\n")
 
-def avaliacao():
-    print("\nAqui será a avaliação do aluno...\n")
+def carregar_tentativas():
+    try:
+        with open("tentativas.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
 
-def avaliacao_resultado():
-    print("rpre")
+def salvar_tentativas(tentativas):
+    with open("tentativas.json", "w") as f:
+        json.dump(tentativas, f)
+
+def calcular_media(email):
+    tentativas = carregar_tentativas()
+    notas = tentativas.get(email, [])
+    
+    if notas:
+        # Calculando a média individual do aluno
+        media_aluno = sum(notas) / len(notas)
+        return media_aluno
+    return 0
+
+def avaliacao(email):
+    tentativas = carregar_tentativas()
+    max_tentativas = 3
+    
+    if len(tentativas.get(email, [])) >= max_tentativas:
+        print("Você já atingiu o número máximo de tentativas!")
+        return
+    
+    print(f"Tentativa {len(tentativas.get(email, [])) + 1} de {max_tentativas}")
+    nota = 0
+    
+    for questao in questoes:
+        print("\n" + questao["pergunta"])
+        for opcao in questao["opcoes"]:
+            print(opcao)
+        
+        resposta = input("Sua resposta: ").strip().upper()
+        if resposta == questao["resposta"]:
+            nota += questao["valor"]
+        else:
+            print(f"Resposta errada! A correta era: {questao['resposta']}")
+    
+    print(f"\nSua nota final: {nota}/{len(questoes)}")
+    tentativas.setdefault(email, []).append(nota)
+    salvar_tentativas(tentativas)
+    
+    if len(tentativas[email]) < max_tentativas:
+        print(f"Você ainda tem {max_tentativas - len(tentativas[email])} tentativa(s).\n")
+    else:
+        print("Suas tentativas acabaram.\n")
+
+def avaliacao_resultado(email):
+    media = calcular_media(email)
+    print(f"Média das tentativas: {media:.2f}/10")
+
+def gabarito():
+    print("\nGabarito das questões:")
+    for questao in questoes:
+        print(f"{questao['pergunta']}")
+        print(f"Resposta correta: {questao['resposta']}\n")
+
+def estatisticas_questoes():
+    tentativas = carregar_tentativas()
+    acertos = [0] * len(questoes)
+    total_respostas = [0] * len(questoes)
+    
+    for respostas in tentativas.values():
+        for i, nota in enumerate(respostas):
+            if nota > 0:  
+                acertos[i] += 1
+            total_respostas[i] += 1
+    
+    questao_mais_acertada = acertos.index(max(acertos)) if total_respostas else None
+    questao_menos_acertada = acertos.index(min(acertos)) if total_respostas else None
+    
+    if questao_mais_acertada is not None:
+        print(f"Questão mais acertada: {questoes[questao_mais_acertada]['pergunta']}")
+    if questao_menos_acertada is not None:
+        print(f"Questão menos acertada: {questoes[questao_menos_acertada]['pergunta']}")
+
+def relatorio_professor():
+    tentativas = carregar_tentativas()
+
+    if not tentativas:
+        print("Nenhum aluno completou a prova ainda.")
+        return
+
+    print("\nRelatório do Professor:\n") 
+    print("Notas dos alunos e suas médias:")
+
+    for email, notas in tentativas.items():
+        nome_aluno = usuarios_alunos[email]["nome"]
+        media_aluno = calcular_media(email)  
+        print(f"{nome_aluno} - Média: {media_aluno:.2f}")
+
+
+    acertos = [0] * len(questoes)
+    total_respostas = [0] * len(questoes)
+
+    for respostas in tentativas.values():
+        for i, nota in enumerate(respostas):
+            if nota > 0:
+                acertos[i] += 1
+            total_respostas[i] += 1
+
+    if total_respostas:
+        questao_mais_acertada = acertos.index(max(acertos))
+        questao_menos_acertada = acertos.index(min(acertos))
+        
+        print("\nQuestões com mais acertos e menos acertos:")
+        print(f"Questão com mais acertos: {questoes[questao_mais_acertada]['pergunta']}")
+        print(f"Questão com menos acertos: {questoes[questao_menos_acertada]['pergunta']}")
+    else:
+        print("Nenhuma tentativa registrada!")
 
 verifica_user()

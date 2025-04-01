@@ -9,6 +9,11 @@
             "nome": "Aninha Potter",
             "idade": 17,
             "senha": "$2b$12$p7fFGIJotbyFLcV90mR2.OesGR7wIgbEGOJzEaanj7ZteEdUKYIFK"
+        },
+        "thiagof@gmail.com": {
+            "nome": "Thiago Fritz",
+            "idade": 45,
+            "senha": "$2b$12$wylWJvVwdrSK/DxWzjj4fupZaTYgx/uZ2ZuxSCiUCPjO9ZgOIGWOW"
         }
     },
     "professores": {

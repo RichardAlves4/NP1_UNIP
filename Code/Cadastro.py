@@ -21,8 +21,7 @@ questoes = [
     {"pergunta": "7. O que esse código faz?\nfor i in range(3):\n    print(i)", "opcoes": ["A) Imprime 1, 2, 3", "B) Imprime 0, 1, 2", "C) Imprime 0, 1, 2, 3", "D) Dá erro"], "resposta": "B", "valor": 1},
     {"pergunta": "8. Como declarar uma lista em Python?", "opcoes": ["A) lista = {1, 2, 3}", "B) lista = [1, 2, 3]", "C) lista = (1, 2, 3)", "D) lista = <1, 2, 3>"], "resposta": "B", "valor": 2}
 ]
-
-# Função para carregar os dados dos usuários do arquivo JSON
+# RF12 - Função para carregar os usuários de um arquivo JSON
 def carregar_usuarios():
     global usuarios_alunos, usuarios_professores
     try:
@@ -35,12 +34,12 @@ def carregar_usuarios():
         # Se o arquivo não for encontrado, ele avisa e não faz nada
         print("Arquivo \"usuarios.json\" não encotrado. Gerando novo arquivo...")
 
-# Função para salvar os dados de usuários de volta no arquivo JSON
+# RF12 - Função para salvar os dados de usuários de volta no arquivo JSON
 def salvar_usuarios():
     with open(arquivo_json, "w") as json_aberto:
         json.dump({"alunos":usuarios_alunos, "professores":usuarios_professores}, json_aberto, indent= 4)
 
-# Função para criptografar a senha usando bcrypt
+# RF04 - Função para criptografar a senha usando bcrypt
 def criptografar_senha(senha):
     salt = bcrypt.gensalt()  # Gera um salt para a criptografia
     return bcrypt.hashpw(senha.encode(), salt).decode()  # Criptografa e retorna a senha
@@ -124,6 +123,11 @@ def professor():
             print("Voltar!")  # Volta para o menu anterior
             return
 
+
+# RF01 - Cadastro de alunos
+# RF02 - Validação de idade mínima (7 anos)
+# RF03 - Validação de email (@gmail.com)
+# RF04 - Armazenamento seguro de senha
 # Função para o cadastro de alunos
 def cadastro_aluno():
     print("\nCadastro de Alunos\n")
@@ -133,7 +137,7 @@ def cadastro_aluno():
         nome_aluno = (input("Informe seu nome: ")).strip().title()
         email_aluno = (input("Informe seu melhor email: ")).strip().lower()
         
-        # Verifica se o e-mail é válido
+        # RF03 - Verifica se o e-mail é válido
         if not email_aluno.endswith("@gmail.com"):
             print("\nE-mail inválido! Certifique-se de usar um endereço @gmail.com.\n")
             continue
@@ -142,7 +146,7 @@ def cadastro_aluno():
             print("Usuário já cadastrado")
             continue
 
-        # Coleta a idade do aluno
+        # RF02 - Valida e coleta a idade do aluno
         while True:
             idade_aluno = int(input("Informe sua idade: ").strip())
             if idade_aluno < 7:
@@ -151,7 +155,7 @@ def cadastro_aluno():
             else:
                 break
             
-        # Coleta e verifica a senha
+        # RF04 - Coleta e verifica a senha
         while True:
             senha_aluno = (input("Informe uma senha forte: ")).strip()
             repet_senha_aluno = (input("Repita sua senha: ")).strip()
@@ -163,12 +167,16 @@ def cadastro_aluno():
                     "idade": idade_aluno,
                     "senha": senha_criptografada
                 } 
-                salvar_usuarios()  # Salva os dados no arquivo
+                salvar_usuarios()  # RF12 - Salva os dados no arquivo
                 print("\nCadastro realizado com sucesso!\n")
                 return
             else:
                 print("\nSenha incorreta! Tente novamente\n")
 
+# RF01 - Cadastro de professores
+# RF02 - Validação de idade mínima (18 anos)
+# RF03 - Validação de email (@gmail.com)
+# RF04 - Armazenamento seguro de senha
 # Função para o cadastro de professores
 def cadastro_professor():
     print("\nCadastro de Professores\n")
@@ -178,7 +186,7 @@ def cadastro_professor():
         nome_professor = str(input("Informe o seu nome: ")).strip().title()
         email_professor = str(input("Informe seu melhor email: ")).strip()
         
-        # Verifica se o e-mail é válido
+        # RF03 - Verifica se o e-mail é válido
         if not email_professor.endswith("@gmail.com"):
             print("\nE-mail inválido! Certifique-se de usar um endereço @gmail.com.\n")
             continue
@@ -187,7 +195,7 @@ def cadastro_professor():
             print("Usuário já cadastrado")
             continue
 
-        # Coleta a idade do professor
+        # RF02 - Coleta a idade do professor
         while True:
             idade_professor = int(input("Informe sua idade: ").strip())
             if idade_professor < 18:
@@ -196,7 +204,7 @@ def cadastro_professor():
             else:
                 break
             
-        # Coleta e verifica a senha
+        # RF04 - Coleta e verifica a senha
         while True:
             senha_professor = str(input("Informe uma senha forte: ")).strip()
             repet_senha_professor = str(input("Repita sua senha: ")).strip()
@@ -208,13 +216,13 @@ def cadastro_professor():
                     "idade": idade_professor,
                     "senha": senha_criptografada
                 }
-                salvar_usuarios()  # Salva os dados no arquivo
+                salvar_usuarios()  # RF12 - Salva os dados no arquivo
                 print("\nCadastro realizado com sucesso!\n")
                 return
             else:
                 print("\nSenha incorreta! Tente novamente\n")
 
-# Função para o login do aluno
+# RF05 - Função para o login do aluno
 def login_aluno():
     print("\nEntrar como aluno\n")
 
@@ -223,15 +231,18 @@ def login_aluno():
         email_aluno = str(input("Email: ")).strip().lower()
         senha_aluno = str(input("Senha: ")).strip()
 
+        # Verifica se o usuário existe
         if email_aluno in usuarios_alunos:
             senha_armazenada = usuarios_alunos[email_aluno]["senha"]
+
+            # RF04 - Verificação segura de senha
         if verificar_senha(senha_aluno, senha_armazenada):  # Verifica se a senha está correta
             print(f"\nBem-vindo, {usuarios_alunos[email_aluno]['nome']}!")
             main_aluno(email_aluno)  # Chama a função para o menu do aluno
             break
         print("Email ou senha incorretos! Tente novamente")
 
-# Função para o login do professor
+# RF05 - Função para o login do professor
 def login_professor():
     print("\nEntrar como professor\n")
 
@@ -240,8 +251,11 @@ def login_professor():
         email_professor = str(input("Email: ")).strip().lower()
         senha_professor = str(input("Senha: ")).strip()
 
+        # Verifica se o usuário existe
         if email_professor in usuarios_professores:
             senha_armazenada = usuarios_professores[email_professor]["senha"]
+
+            # RF04 - Verificação segura de senha
         if verificar_senha(senha_professor, senha_armazenada):  # Verifica se a senha está correta
             print(f"\nBem-vindo, {usuarios_professores[email_professor]['nome']}!")
             main_professor()  # Chama a função para o menu do professor
@@ -300,7 +314,7 @@ def salvar_tentativas(tentativas):
     with open("tentativas.json", "w") as f:
         json.dump(tentativas, f)
 
-# Função para calcular a média das notas do aluno
+# RF08 - Função para calcular a média das notas do aluno
 def calcular_media(email):
     tentativas = carregar_tentativas()
     notas = tentativas.get(email, [])
@@ -311,7 +325,7 @@ def calcular_media(email):
         return media_aluno
     return 0
 
-# Função para a prova do aluno
+# RF06 - Função para a prova do aluno
 def avaliacao(email):
     tentativas = carregar_tentativas()
     max_tentativas = 3
@@ -322,6 +336,7 @@ def avaliacao(email):
     
     print("\nComece a prova!\n")
     
+    # RF07 - Cálculo de nota
     # A cada pergunta, o aluno tem que responder e vamos atribuindo uma pontuação
     pontuacao = 0
     for questao in questoes:
@@ -347,7 +362,7 @@ def avaliacao(email):
     print(f"Sua média de notas é {calcular_media(email):.2f}\n")
     print("Fim da prova!")
 
-# Função para mostrar o resultado da avaliação do aluno
+# RF08 - Função para mostrar o resultado da avaliação do aluno
 def avaliacao_resultado(email):
     tentativas = carregar_tentativas()
 
@@ -361,32 +376,13 @@ def avaliacao_resultado(email):
 
     print(f"\nSua média geral é: {calcular_media(email):.2f}\n")
 
-# Função para exibir o gabarito da prova
+# RF11 - Função para exibir o gabarito da prova
 def gabarito():
     print("\nGabarito da prova\n")
     for questao in questoes:
         print(f"{questao['pergunta']} Resposta: {questao['resposta']}")
 
-# Função de verificação do tipo de usuário (aluno ou professor)
-def verifica_user():
-    estado_verifica_user = False
-
-    while not estado_verifica_user:
-        menu_verifica_user = input("Digite:\n\n\"A\" Para acesso a área do aluno\n\"P\" Para acesso a área do professor\n\"E\" Para Sair\n").upper()
-
-        if menu_verifica_user not in ["A", "P", "E"]:
-            print("\nOpção inválida. Tente novamente.\n")
-            continue
-
-        if menu_verifica_user == "A":
-            aluno()  # Chama a função para o menu do aluno
-        elif menu_verifica_user == "P":
-            professor()  # Chama a função para o menu do professor
-        elif menu_verifica_user == "E":
-            print("Saiu!")  # Sai do programa
-            break
-
-# Função para exibir o relatório completo para o professor
+# RF09 - Função para exibir o relatório completo para o professor
 def relatorio_professor():
     tentativas = carregar_tentativas()
 
@@ -411,7 +407,7 @@ def relatorio_professor():
                 acertos[i] += 1
             total_respostas[i] += 1  # Conta o total de respostas para cada questão
 
-    # Exibe as estatísticas sobre as questões
+    # RF10 - Exibe as estatísticas sobre as questões
     if total_respostas:
         questao_mais_acertada = acertos.index(max(acertos))
         questao_menos_acertada = acertos.index(min(acertos))

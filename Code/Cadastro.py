@@ -386,28 +386,6 @@ def verifica_user():
             print("Saiu!")  # Sai do programa
             break
 
-# Função para gerar as estatísticas das questões
-def estatisticas_questoes():
-    tentativas = carregar_tentativas()
-    acertos = [0] * len(questoes)
-    total_respostas = [0] * len(questoes)
-    
-    for respostas in tentativas.values():
-        for i, nota in enumerate(respostas):
-            if nota > 0:  # Conta acertos
-                acertos[i] += 1
-            total_respostas[i] += 1  # Conta o total de respostas para cada questão
-    
-    # Identifica as questões com mais e menos acertos
-    questao_mais_acertada = acertos.index(max(acertos)) if total_respostas else None
-    questao_menos_acertada = acertos.index(min(acertos)) if total_respostas else None
-    
-    # Exibe as estatísticas
-    if questao_mais_acertada is not None:
-        print(f"Questão mais acertada: {questoes[questao_mais_acertada]['pergunta']}")
-    if questao_menos_acertada is not None:
-        print(f"Questão menos acertada: {questoes[questao_menos_acertada]['pergunta']}")
-
 # Função para exibir o relatório completo para o professor
 def relatorio_professor():
     tentativas = carregar_tentativas()

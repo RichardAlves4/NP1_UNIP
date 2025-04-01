@@ -266,7 +266,6 @@ def calcular_media(email):
     notas = tentativas.get(email, [])
     
     if notas:
-        # Calculando a média individual do aluno
         media_aluno = sum(notas) / len(notas)
         return media_aluno
     return 0
@@ -312,25 +311,6 @@ def gabarito():
         print(f"{questao['pergunta']}")
         print(f"Resposta correta: {questao['resposta']}\n")
 
-def estatisticas_questoes():
-    tentativas = carregar_tentativas()
-    acertos = [0] * len(questoes)
-    total_respostas = [0] * len(questoes)
-    
-    for respostas in tentativas.values():
-        for i, nota in enumerate(respostas):
-            if nota > 0:  
-                acertos[i] += 1
-            total_respostas[i] += 1
-    
-    questao_mais_acertada = acertos.index(max(acertos)) if total_respostas else None
-    questao_menos_acertada = acertos.index(min(acertos)) if total_respostas else None
-    
-    if questao_mais_acertada is not None:
-        print(f"Questão mais acertada: {questoes[questao_mais_acertada]['pergunta']}")
-    if questao_menos_acertada is not None:
-        print(f"Questão menos acertada: {questoes[questao_menos_acertada]['pergunta']}")
-
 def relatorio_professor():
     tentativas = carregar_tentativas()
 
@@ -345,7 +325,6 @@ def relatorio_professor():
         nome_aluno = usuarios_alunos[email]["nome"]
         media_aluno = calcular_media(email)  
         print(f"{nome_aluno} - Média: {media_aluno:.2f}")
-
 
     acertos = [0] * len(questoes)
     total_respostas = [0] * len(questoes)

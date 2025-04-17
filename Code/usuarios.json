@@ -1,10 +1,5 @@
 {
     "alunos": {
-        "aluno123@gmail.com": {
-            "nome": "Richard Alves Da Silva",
-            "idade": 18,
-            "senha": "$2b$12$E1.Xe7kaihC0PQ1IN5gyMu7S3.JUjope/VkJEsOIf51P/o6HwcnIy"
-        },
         "aluno321@gmail.com": {
             "nome": "Aninha Potter",
             "idade": 17,
@@ -12,10 +7,6 @@
         }
     },
     "professores": {
-        "professor123@gmail.com": {
-            "nome": "Oswaldo Pinto",
-            "idade": 69,
-            "senha": "$2b$12$w392/e/zag1M1XPJuMWAuOldLFHRmeJARqri1h5Rq2Y93P2dWmMEe"
-        }
+
     }
 }

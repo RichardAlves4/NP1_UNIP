@@ -1,10 +1,5 @@
 {
     "alunos": {
-        "aluno123@gmail.com": {
-            "nome": "Richard Alves Da Silva",
-            "idade": 18,
-            "senha": "$2b$12$E1.Xe7kaihC0PQ1IN5gyMu7S3.JUjope/VkJEsOIf51P/o6HwcnIy"
-        },
         "aluno321@gmail.com": {
             "nome": "Aninha Potter",
             "idade": 17,
@@ -14,13 +9,23 @@
             "nome": "Thiago Fritz",
             "idade": 45,
             "senha": "$2b$12$wylWJvVwdrSK/DxWzjj4fupZaTYgx/uZ2ZuxSCiUCPjO9ZgOIGWOW"
+        },
+        "aluno123@gmail.com": {
+            "nome": "Richard Alves Da Silva",
+            "idade": 18,
+            "senha": "$2b$12$fNjHyfZyBwBWGRkSyIqLFug7EP4nDKFCyCt.Vf3gOBh8ekr/7irim"
+        },
+        "aluno@gmail.com": {
+            "nome": "Aluno Unip",
+            "idade": 55,
+            "senha": "$2b$12$LaHvXcl2vlDyFNLCTdaQ7OWT8vPJrnE7bh8T5i5QFy2KSd5uTBAtG"
         }
     },
     "professores": {
         "professor123@gmail.com": {
-            "nome": "Oswaldo Pinto",
-            "idade": 69,
-            "senha": "$2b$12$w392/e/zag1M1XPJuMWAuOldLFHRmeJARqri1h5Rq2Y93P2dWmMEe"
+            "nome": "Mestre Salame",
+            "idade": 20,
+            "senha": "$2b$12$UVzKEFNrGon3IZ8P6FT35uI6QXqhUTEHZDhdqwM0ERktjpuQXGYdW"
         }
     }
 }

@@ -1,15 +1,15 @@
 from .questoes import questoes
-from banco import tentativas_alunos, salvar_tentativas
+import banco 
 
 # RF06 - Função para a prova do aluno
 def aplicar_prova(email):
-    max_tentativas = 3
+    maximo_tentativas = 3
 
-    if len(tentativas_alunos.get(email, [])) >= max_tentativas:
+    if len(banco.tentativas_alunos.get(email, [])) >= maximo_tentativas:
         print("Você já atingiu o número máximo de tentativas!")
         return
 
-    print(f"\nTentativa {len(tentativas_alunos.get(email, [])) + 1} de {max_tentativas}")
+    print(f"\nTentativa {len(banco.tentativas_alunos.get(email, [])) + 1} de {maximo_tentativas}")
    
     # RF07 - Cálculo de nota
     # A cada pergunta, o aluno tem que responder e vamos atribuindo uma pontuação
@@ -26,10 +26,10 @@ def aplicar_prova(email):
             print(f"Resposta errada! A correta era: {questao['resposta']}")
 
     print(f"\nSua nota final: {nota}/{sum(q['valor'] for q in questoes)}")
-    tentativas_alunos.setdefault(email, []).append(nota) # Adicionando a pontuação na lista de tentativas
-    salvar_tentativas() # Salvando as tentativas no arquivo
+    banco.tentativas_alunos.setdefault(email, []).append(nota) # Adicionando a pontuação na lista de tentativas
+    banco.salvar_tentativas() # Salvando as tentativas no arquivo
 
-    restantes = max_tentativas - len(tentativas_alunos[email])
+    restantes = maximo_tentativas - len(banco.tentativas_alunos[email])
     if restantes:
         print(f"Você ainda tem {restantes} tentativa(s).\n")
     else:
@@ -37,7 +37,7 @@ def aplicar_prova(email):
 
 # RF08 - Função para calcular a média das notas do aluno
 def calcular_media(email):
-    notas = tentativas_alunos.get(email, [])
+    notas = banco.tentativas_alunos.get(email, [])
     return sum(notas) / len(notas) if notas else 0
 
 # RF08 - Função para mostrar o resultado da avaliação do aluno

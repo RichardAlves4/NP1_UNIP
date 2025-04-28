@@ -1,6 +1,7 @@
 from auth import cadastro_aluno, login_aluno, cadastro_professor, login_professor
 from avaliacao import aplicar_prova, mostrar_resultado_aluno, mostrar_gabarito, relatorio_professor
 from banco import carregar_usuarios, salvar_usuarios, usuarios_alunos, usuarios_professores
+from banco import carregar_usuarios, salvar_usuarios, carregar_tentativas, salvar_tentativas, usuarios_alunos, usuarios_professores
 
 def menu_inicial():
     print("Bem-vindo ao Sistema de Avaliação\n")
@@ -27,6 +28,7 @@ def menu_professor():
 
 def main():
     carregar_usuarios()  # Carrega os dados dos usuários no início
+    carregar_tentativas() # Carrega os dados das notas dos alunos
 
     while True:
         menu_inicial()
@@ -86,6 +88,7 @@ def main():
                 print("Professor não encontrado!")
         elif opcao == "0":  # Sair
             salvar_usuarios()  # Salva os usuários antes de sair
+            salvar_tentativas()  # Salva tentativas
             print("Saindo... Até mais!")
             break
         else:

@@ -3,96 +3,131 @@ from avaliacao import aplicar_prova, mostrar_resultado_aluno, mostrar_gabarito, 
 from banco import carregar_usuarios, salvar_usuarios, usuarios_alunos, usuarios_professores
 from banco import carregar_usuarios, salvar_usuarios, carregar_tentativas, salvar_tentativas, usuarios_alunos, usuarios_professores
 
-def menu_inicial():
-    print("Bem-vindo ao Sistema de Avaliação\n")
-    print("1. Cadastro de Aluno")
-    print("2. Login de Aluno")
-    print("3. Cadastro de Professor")
-    print("4. Login de Professor")
-    print("5. Aplicar Prova")
-    print("6. Ver Resultado da Prova")
-    print("7. Ver Gabarito")
-    print("8. Gerar Relatório de Avaliação para Professores")
-    print("0. Sair")
+# Função principal para verificar qual tipo de usuário está tentando acessar (aluno ou professor)
+def verifica_user():
+    estado_verifica_user = False
 
-def menu_aluno():
-    print("\nMenu Aluno:")
-    print("1. Fazer Prova")
-    print("2. Ver Resultado da Prova")
-    print("3. Sair")
+    while not estado_verifica_user:
+        # Solicita ao usuário qual área deseja acessar
+        menu_verifica_user = input("Digite:\n\n\"A\" Para acesso a área do aluno\n\"P\" Para acesso a área do professor\n\"X\" Para Sair\n").upper()
 
+        # Verifica se a opção escolhida é válida
+        if menu_verifica_user not in ["A", "P", "X"]:
+            print("\nOpção inválida. Tente novamente.\n")
+            continue
+
+        if menu_verifica_user == "A":
+            aluno()  # Chama a função para o aluno
+        elif menu_verifica_user == "P":
+            professor()  # Chama a função para o professor
+        elif menu_verifica_user == "X":
+            salvar_usuarios()  # Salva os usuários antes de sair
+            salvar_tentativas()  # Salva tentativas
+            print("Saiu!")  # Sai do programa
+            break
+
+# Função para gerenciar as ações do aluno (cadastro, login ou voltar)
+def aluno():
+    estado = False
+
+    while not estado:
+
+        print("Bem-vindo Aluno")
+
+        # Solicita a opção ao aluno
+        escolha = str(input("Digite \"C\" para Cadastrar-se, \"L\" para acessar sua conta ou aperte \"X\" para voltar\n")).upper()
+        
+        if escolha not in ["C", "L", "X"]:
+            print("\nOpção inválida. Tente novamente.\n")
+            continue
+
+        if escolha == "C":
+            cadastro_aluno()  # Chama a função para cadastrar o aluno
+        
+        elif escolha == "L":
+            aluno_email = login_aluno() # Chama a função para logar o aluno
+            if aluno_email:
+                menu_aluno(aluno_email)
+                estado = True
+        
+        elif escolha == "X":
+            print("Voltar!")  # Volta para o menu anterior
+            estado = True
+            return
+
+# Função para gerenciar as ações do professor (cadastro, login ou voltar)
+def professor():
+    estado= False
+
+    while not estado:
+        print("Bem-vindo Professor")
+        # Solicita a opção ao professor
+        escolha = str(input("Digite \"C\" para Cadastrar-se, \"L\" para acessar sua conta ou aperte \"X\" para voltar\n")).upper()
+        
+        if escolha not in ["C", "L", "X"]:
+            print("\nOpção inválida. Tente novamente.\n")
+            continue
+
+        if escolha == "C":     
+            cadastro_professor()  # Chama a função para cadastrar o professor
+        
+        elif escolha == "L":
+            professor_email = login_professor() # Chama a função para logar o aluno
+            if professor_email:
+                menu_professor()  # Chama a função para logar o professor
+                estado = True
+        
+        elif escolha == "X":
+            print("Voltar!")
+            estado = True  # Volta para o menu anterior
+            return
+        
+# Função para o menu principal do aluno (prova, ver resultado, desconectar)
+def menu_aluno(email):
+    estado_main_aluno = False
+
+    while not estado_main_aluno:
+        # Exibe as opções para o aluno
+        menu_main_aluno = input("Digite:\n\n\"P\" Para acessar a prova\n\"R\" Para acessar sua nota\n\"X\" Para desconectar\n").upper()
+
+        # Verifica as opções escolhidas pelo aluno
+        if menu_main_aluno not in ["P","R","X"]:
+            print("\nOpção inválida. Tente novamente.\n")
+            continue
+
+        if menu_main_aluno == "P":
+            aplicar_prova(email)  # Chama a função para realizar a prova
+        elif menu_main_aluno == "R":
+            mostrar_resultado_aluno(email)  # Chama a função para ver o resultado
+        elif menu_main_aluno == "X":
+            print("Desconectar!")  # Desconecta o aluno
+            break
+
+# Função para o menu principal do professor (relatório, gabarito, desconectar)
 def menu_professor():
-    print("\nMenu Professor:")
-    print("1. Gerar Relatório de Avaliação")
-    print("2. Sair")
+
+    while True:
+        # Exibe as opções para o professor
+        menu_main_professor = input("Digite:\n\n\"R\" Para acessar o relatório completo\n\"G\" Para acessar o gabarito\n\"X\" Para desconectar\n").upper()
+
+        # Verifica as opções escolhidas pelo professor
+        if menu_main_professor == "R":
+            relatorio_professor(usuarios_alunos)  # Chama a função para ver o relatório
+        elif menu_main_professor == "G":
+            mostrar_gabarito()  # Chama a função para ver o gabarito
+        elif menu_main_professor == "X":
+            print("Desconectar!")  # Desconecta o professor
+            break
+        else:
+            print("\nOpção inválida. Tente novamente.\n")
 
 def main():
     carregar_usuarios()  # Carrega os dados dos usuários no início
     carregar_tentativas() # Carrega os dados das notas dos alunos
 
-    while True:
-        menu_inicial()
-        opcao = input("Escolha uma opção: ").strip()
-
-        if opcao == "1":  # Cadastro de Aluno
-            cadastro_aluno()
-        elif opcao == "2":  # Login de Aluno
-            aluno_email = login_aluno()
-            if aluno_email:
-                while True:
-                    menu_aluno()
-                    opcao_aluno = input("Escolha uma opção: ").strip()
-
-                    if opcao_aluno == "1":  # Fazer Prova
-                        aplicar_prova(aluno_email)
-                    elif opcao_aluno == "2":  # Ver Resultado
-                        mostrar_resultado_aluno(aluno_email)
-                    elif opcao_aluno == "3":  # Sair
-                        break
-                    else:
-                        print("Opção inválida.")
-        elif opcao == "3":  # Cadastro de Professor
-            cadastro_professor()
-        elif opcao == "4":  # Login de Professor
-            professor_email = login_professor()
-            if professor_email:
-                while True:
-                    menu_professor()
-                    opcao_professor = input("Escolha uma opção: ").strip()
-
-                    if opcao_professor == "1":  # Gerar Relatório
-                        relatorio_professor(usuarios_alunos)
-                    elif opcao_professor == "2":  # Sair
-                        break
-                    else:
-                        print("Opção inválida.")
-        elif opcao == "5":  # Aplicar Prova (Opção rápida para qualquer um)
-            email = input("Informe seu email: ").strip().lower()
-            if email in usuarios_alunos or email in usuarios_professores:
-                aplicar_prova(email)
-            else:
-                print("Usuário não encontrado!")
-        elif opcao == "6":  # Ver Resultado
-            email = input("Informe seu email: ").strip().lower()
-            if email in usuarios_alunos:
-                mostrar_resultado_aluno(email)
-            else:
-                print("Usuário não encontrado!")
-        elif opcao == "7":  # Ver Gabarito
-            mostrar_gabarito()
-        elif opcao == "8":  # Gerar Relatório (Opção rápida para qualquer professor)
-            email = input("Informe seu email de professor: ").strip().lower()
-            if email in usuarios_professores:
-                relatorio_professor(usuarios_alunos)
-            else:
-                print("Professor não encontrado!")
-        elif opcao == "0":  # Sair
-            salvar_usuarios()  # Salva os usuários antes de sair
-            salvar_tentativas()  # Salva tentativas
-            print("Saindo... Até mais!")
-            break
-        else:
-            print("Opção inválida.")
+    # Exibe uma mensagem de boas-vindas
+    print("Bem-vindo ao nosso site.")
+    verifica_user()
 
 if __name__ == "__main__":
     main()

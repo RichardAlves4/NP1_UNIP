@@ -1,26 +1,16 @@
 {
     "alunos": {
         "aluno123@gmail.com": {
-            "nome": "Richard",
-            "idade": 14,
-            "senha": "$2b$12$YVBuMj3UbVSZcgpLkoTIiuI6P172HI71o97o4uWatKoDxlER4nzWG"
-        },
-        "aluno3@gmail.com": {
-            "nome": "Cccc",
-            "idade": 44,
-            "senha": "$2b$12$U7TlWUz65XdKjUJqw.wYh.Qr6OWFYyYEpHBdXKQzSY53sXM5kPZvu"
+            "nome": "Richard Alves Da Silva",
+            "idade": 18,
+            "senha": "$2b$12$sgG.qAEiIcptFOYnSbcaL.LbTNKoQcLscU2cgp7TOkyKwtmbY2Oyy"
         }
     },
     "professores": {
         "professor123@gmail.com": {
-            "nome": "Pr",
-            "idade": 44,
-            "senha": "$2b$12$67U2EYizpgh0OeCvFfSnBe2kshf00TpDW9sxt7XmshSK/o4ZjmAzG"
-        },
-        "cross@gmail.com": {
-            "nome": "Cross",
-            "idade": 44,
-            "senha": "$2b$12$V8MXfVUvOWE2e4WUkEpcY.MyFmizWrsrfcWimwK43GpKLv6xkU4HS"
+            "nome": "Simas Turbo",
+            "idade": 69,
+            "senha": "$2b$12$0ZUD/ZVBpPGMPqcEbKp84OHnPNZY5of/dmwjkDecIU536pnVTXKGG"
         }
     }
 }

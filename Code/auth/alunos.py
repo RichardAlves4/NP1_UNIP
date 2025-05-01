@@ -10,6 +10,18 @@ import re
 def cadastro_aluno():
     print("\nCadastro de Alunos\n")
 
+    print("\nAntes de se cadastrar, você deve aceitar nossa Política de Privacidade.\n\nUsaremos seus dados apenas para criar sua conta no sistema e permitir seu acesso às provas.")
+
+    permissao = input("\nVocê aceita nossa Política de Privacidade? (S/N): ").lower().upper()
+
+    if permissao == 'N':
+        print("Cadastro cancelado. Você deve aceitar os termos para continuar.\n")
+        return None
+    
+    elif permissao not in ["S","X"]:
+        print("Resposta inválida.")
+        return None
+
     while True:
         
         # Coleta o nome do aluno para o cadastro

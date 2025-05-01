@@ -1,6 +1,7 @@
 # Importando a biblioteca json para manipulação de arquivos JSON
-import json
 import os
+import json
+import bcrypt
 
 # Diretório onde os arquivos serão guardados
 diretorio_bd = os.path.dirname(__file__)
@@ -38,14 +39,110 @@ def salvar_usuarios():
             "professores": usuarios_professores
         }, json_aberto, indent=4)
 
+# Função para editar dados
+def editar_aluno(email):
+    usuario = usuarios_alunos.get(email)
+
+    if usuario:
+        print("\nEditar conta\n(aperte Enter para manter o atual)")
+
+        novo_nome = input(f"Nome atual ({usuario['nome']}): ")
+        nova_idade = input(f"Idade atual ({usuario['idade']}): ")
+        nova_senha = input("Nova senha (deixe vazio para não mudar): ")
+
+        if novo_nome:
+            usuario['nome'] = novo_nome
+
+        if nova_idade:
+            usuario['idade'] = nova_idade
+            
+        if nova_senha:
+            usuario['senha'] = bcrypt.hashpw(nova_senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+        usuarios_alunos[email] = usuario
+        salvar_usuarios()
+        print("DADOS ATUALIZADOS COM SUCESSO!\n")
+
+    else:
+        print("Usuário não encontrado.\n")
+
+# Função para excluir conta
+def excluir_aluno(email):
+    while True: 
+
+        confirmacao = input("Tem certeza que deseja excluir sua conta? Esta ação é irreversível! (S/N): ").lower().upper()
+
+        if confirmacao not in ["S", "n"]:
+            print("\nOpção inválida. Tente novamente.\n")
+            continue
+
+        if confirmacao == 'S':
+            usuarios_alunos.pop(email, None)
+            salvar_usuarios()
+            print("Conta excluída com sucesso!\n")
+            break
+
+        else:
+            print("Exclusão cancelada.\n")
+            break
+
+# Função para editar dados
+def editar_professor(email):
+    usuario = usuarios_professores.get(email)
+
+    if usuario:
+        print("\nEditar conta\n(aperte Enter para manter o atual)")
+
+        novo_nome = input(f"Nome atual ({usuario['nome']}): ")
+        nova_idade = input(f"Idade atual ({usuario['idade']}): ")
+        nova_senha = input("Nova senha (deixe vazio para não mudar): ")
+
+        if novo_nome:
+            usuario['nome'] = novo_nome
+
+        if nova_idade:
+            usuario['idade'] = nova_idade
+            
+        if nova_senha:
+            usuario['senha'] = bcrypt.hashpw(nova_senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+        usuarios_alunos[email] = usuario
+        salvar_usuarios()
+        print("DADOS ATUALIZADOS COM SUCESSO!\n")
+
+    else:
+        print("Usuário não encontrado.\n")
+
+# Função para excluir conta
+def excluir_professor(email):
+    while True: 
+
+        confirmacao = input("Tem certeza que deseja excluir sua conta? Esta ação é irreversível! (S/N): ").lower().upper()
+
+        if confirmacao not in ["S", "n"]:
+            print("\nOpção inválida. Tente novamente.\n")
+            continue
+
+        if confirmacao == 'S':
+            usuarios_professores.pop(email, None)
+            salvar_usuarios()
+            print("Conta excluída com sucesso!\n")
+            break
+
+        else:
+            print("Exclusão cancelada.\n")
+            break
+
 # Função para carregar as tentativas dos alunos do arquivo JSON
 def carregar_tentativas():
     global tentativas_alunos
+
     try:
         with open(arquivo_tentativas, "r") as f:
             dados = json.load(f)
             tentativas_alunos.clear()
             tentativas_alunos.update(dados)
+
     except FileNotFoundError:
         print('Arquivo "tentativas.json" não encontrado. Um novo será criado quando salvar.')
 

@@ -1,7 +1,6 @@
 from auth import cadastro_aluno, login_aluno, cadastro_professor, login_professor
 from avaliacao import aplicar_prova, mostrar_resultado_aluno, mostrar_gabarito, relatorio_professor
-from banco import carregar_usuarios, salvar_usuarios, usuarios_alunos, usuarios_professores
-from banco import carregar_usuarios, salvar_usuarios, carregar_tentativas, salvar_tentativas, usuarios_alunos, usuarios_professores
+from banco import carregar_usuarios, salvar_usuarios, editar_aluno, editar_professor, excluir_aluno, excluir_professor, carregar_tentativas, salvar_tentativas, usuarios_alunos
 
 # Função principal para verificar qual tipo de usuário está tentando acessar (aluno ou professor)
 def verifica_user():
@@ -32,7 +31,7 @@ def aluno():
 
     while not estado:
 
-        print("Bem-vindo Aluno")
+        print("\nBem-vindo Aluno")
 
         # Solicita a opção ao aluno
         escolha = str(input("Digite \"C\" para Cadastrar-se, \"L\" para acessar sua conta ou aperte \"X\" para voltar\n")).upper()
@@ -88,23 +87,27 @@ def menu_aluno(email):
 
     while not estado_main_aluno:
         # Exibe as opções para o aluno
-        menu_main_aluno = input("Digite:\n\n\"P\" Para acessar a prova\n\"R\" Para acessar sua nota\n\"X\" Para desconectar\n").upper()
+        menu_main_aluno = input("Digite:\n\n\"P\" Para acessar a prova\n\"R\" Para acessar sua nota\n\"E\" Para editar os dados de sua conta\n\"D\" Para deletar sua conta\n\"X\" Para desconectar\n").upper()
 
         # Verifica as opções escolhidas pelo aluno
-        if menu_main_aluno not in ["P","R","X"]:
+        if menu_main_aluno not in ["P","R","E","D","X"]:
             print("\nOpção inválida. Tente novamente.\n")
             continue
 
         if menu_main_aluno == "P":
             aplicar_prova(email)  # Chama a função para realizar a prova
         elif menu_main_aluno == "R":
-            mostrar_resultado_aluno(email)  # Chama a função para ver o resultado
-        elif menu_main_aluno == "X":
+            mostrar_resultado_aluno(email)
+        elif menu_main_aluno == "E":
+            editar_aluno(email) # Chama a função para editar a conta do aluno
+        elif menu_main_aluno == "D":
+            excluir_aluno(email) # Chama a função para excluir a conta do aluno
+        elif menu_main_aluno == "X": 
             print("Desconectar!")  # Desconecta o aluno
             break
 
 # Função para o menu principal do professor (relatório, gabarito, desconectar)
-def menu_professor():
+def menu_professor(email):
 
     while True:
         # Exibe as opções para o professor
@@ -115,8 +118,12 @@ def menu_professor():
             relatorio_professor(usuarios_alunos)  # Chama a função para ver o relatório
         elif menu_main_professor == "G":
             mostrar_gabarito()  # Chama a função para ver o gabarito
-        elif menu_main_professor == "X":
-            print("Desconectar!")  # Desconecta o professor
+        elif menu_main_professor == "E":
+            editar_professor(email) # Chama a função para editar a conta do professor
+        elif menu_main_professor == "D":
+            excluir_professor(email) # Chama a função para excluir a conta do professor
+        elif menu_main_professor == "X": 
+            print("Desconectar!")  # Desconecta o aluno
             break
         else:
             print("\nOpção inválida. Tente novamente.\n")

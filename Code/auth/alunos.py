@@ -6,10 +6,12 @@ import re
 # RF02 - Validação de idade mínima (7 anos)
 # RF03 - Validação de email (@gmail.com)
 # RF04 - Armazenamento seguro de senha
-# Função para o cadastro de alunos
+# RF15 - Exigir aceite dos termos de privacidade antes do cadastro
+# RF01 - Função para o cadastro de alunos
 def cadastro_aluno():
     print("\nCadastro de Alunos\n")
 
+    # RF15 - Termos de privacidade antes do cadastro
     print("\nAntes de se cadastrar, você deve aceitar nossa Política de Privacidade.\n\nUsaremos seus dados apenas para criar sua conta no sistema e permitir seu acesso às provas.")
 
     permissao = input("\nVocê aceita nossa Política de Privacidade? (S/N): ").lower().upper()

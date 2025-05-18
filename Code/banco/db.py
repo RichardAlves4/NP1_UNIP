@@ -39,6 +39,7 @@ def salvar_usuarios():
             "professores": usuarios_professores
         }, json_aberto, indent=4)
 
+# RF13 - Função para editar os dados do aluno
 # Função para editar dados
 def editar_aluno(email):
     usuario = usuarios_alunos.get(email)
@@ -66,6 +67,7 @@ def editar_aluno(email):
     else:
         print("Usuário não encontrado.\n")
 
+# RF14 - Função para excluir a conta do aluno mediante confirmação
 # Função para excluir conta
 def excluir_aluno(email):
     while True: 
@@ -86,6 +88,7 @@ def excluir_aluno(email):
             print("Exclusão cancelada.\n")
             break
 
+# RF13 - Função para editar os dados do professor
 # Função para editar dados
 def editar_professor(email):
     usuario = usuarios_professores.get(email)
@@ -113,6 +116,7 @@ def editar_professor(email):
     else:
         print("Usuário não encontrado.\n")
 
+# RF14 - Função para excluir a conta do professor mediante confirmação
 # Função para excluir conta
 def excluir_professor(email):
     while True: 

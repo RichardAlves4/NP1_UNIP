@@ -73,7 +73,7 @@ def professor():
         elif escolha == "L":
             professor_email = login_professor() # Chama a função para logar o aluno
             if professor_email:
-                menu_professor()  # Chama a função para logar o professor
+                menu_professor(professor_email)  # Chama a função para logar o professor
                 estado = True
         
         elif escolha == "X":

@@ -4,6 +4,11 @@
             "nome": "Richard Alves Da Silva",
             "idade": 18,
             "senha": "$2b$12$sgG.qAEiIcptFOYnSbcaL.LbTNKoQcLscU2cgp7TOkyKwtmbY2Oyy"
+        },
+        "edu@gmail.com": {
+            "nome": "Edu",
+            "idade": 18,
+            "senha": "$2b$12$d1r2K7Ir7eOxetSP7gShMuYOmBt48TTgi4UPhxDlk20mqX7pxqg7W"
         }
     },
     "professores": {
@@ -11,6 +16,11 @@
             "nome": "Simas Turbo",
             "idade": 69,
             "senha": "$2b$12$0ZUD/ZVBpPGMPqcEbKp84OHnPNZY5of/dmwjkDecIU536pnVTXKGG"
+        },
+        "jose@gmail.com": {
+            "nome": "Jose",
+            "idade": 65,
+            "senha": "$2b$12$rzXuZSRodE/8hALvBGg7.uvEzG69VEq9/p.Lp2/z1qR.iYm1NYYve"
         }
     }
 }
